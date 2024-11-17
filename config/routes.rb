@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  mount Rswag::Api::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => "/api-docs"
+  mount Rswag::Api::Engine => "/api-docs"
   resource :session
   resources :passwords, param: :token
   resources :todos
@@ -10,5 +11,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root to: "rails/welcome#index"
+
+  post "users/sign_up" => "users#sign_up"
+  post "sessions" => "sessions#create"
+
+  resources :todos
 end

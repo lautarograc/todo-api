@@ -1,51 +1,48 @@
 class TodosController < ApplicationController
-  before_action :set_todo, only: %i[ show update destroy ]
-
-  # GET /todos
   def index
-    @todos = Todo.all
-
-    render json: @todos
+    service = Todos::Index.new(params).perform
+    render json: {
+      total_count: service[:total_count],
+      current_page: service[:current_page],
+      todos: TodosPrint.render_as_hash(service[:todos])
+    }
   end
 
-  # GET /todos/1
   def show
-    render json: @todo
+    service = Todos::Show.new(params).perform
+    render json: TodosPrint.render(service[:todo])
   end
 
-  # POST /todos
   def create
-    @todo = Todo.new(todo_params)
-
-    if @todo.save
-      render json: @todo, status: :created, location: @todo
+    service = Todos::Create.new(params: create_params).perform
+    if service.success?
+      render json: TodosPrint.render(service.todo), status: :created
     else
-      render json: @todo.errors, status: :unprocessable_entity
+      render json: { errors: service.errors }, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /todos/1
   def update
-    if @todo.update(todo_params)
-      render json: @todo
+    service = Todos::Update.new(params).perform
+    if service.success?
+      render json: TodosPrint.render(service.todo)
     else
-      render json: @todo.errors, status: :unprocessable_entity
+      render json: { errors: service.errors }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /todos/1
   def destroy
-    @todo.destroy!
+    service = Todos::Destroy.new(params).perform
+    if service.success?
+      head :no_content
+    else
+      render json: { errors: service.errors }, status: :unprocessable_entity
+    end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_todo
-      @todo = Todo.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def todo_params
-      params.expect(todo: [ :name, :description, :token, :slug ])
-    end
+  def create_params
+    params.permit(:name, :parent_id, :description)
+  end
 end
