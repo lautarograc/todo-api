@@ -29,3 +29,6 @@ note: I initially tried to make use of the new Rails 8 (semi)built-in authentica
 6- Search, filtering and querying is managed by Ransack. Only the index action of the to-do controller uses it.
 
 7- Docker is also managed through the new Rails 8 standard, suited for deploy with Kamal.
+
+
+Note: the tree structure is currently vulnerable to circular dependency loops, but in any case the frontend has no means to force this error.
