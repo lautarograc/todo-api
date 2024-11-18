@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2024_11_18_025736) do
+ActiveRecord::Schema[8.1].define(version: 2024_11_18_045119) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "todo_id", null: false
+    t.string "notification_type", null: false
+    t.text "content"
+    t.datetime "sent_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_id"], name: "index_notifications_on_todo_id"
+  end
 
   create_table "todos", force: :cascade do |t|
     t.string "name", limit: 120, null: false
@@ -45,5 +55,6 @@ ActiveRecord::Schema[8.1].define(version: 2024_11_18_025736) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "notifications", "todos"
   add_foreign_key "todos", "users"
 end

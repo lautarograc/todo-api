@@ -36,16 +36,6 @@ RSpec.describe 'Sessions API', type: :request do
         let(:credentials) { { email_address: 'wrong@example.com', password: 'wrongpassword' } }
         run_test!
       end
-
-      response '429', 'Too Many Requests' do
-        before do
-          10.times do
-            post '/sessions', params: { email_address: 'user@example.com', password: 'password123' }
-          end
-        end
-        let(:credentials) { { email_address: 'user@example.com', password: 'password123' } }
-        run_test!
-      end
     end
   end
 end

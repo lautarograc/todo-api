@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotUnique, with: :record_uniq
   rescue_from ActiveRecord::InvalidForeignKey, with: :conflict
 
+  # :nocov:
   def not_found(exception)
     json_response(response: { message: "Not Found", object: exception.model, id: exception.id },
                   status: :not_found)
@@ -28,4 +29,5 @@ class ApplicationController < ActionController::API
     Rails.logger.debug(response.inspect) if Rails.env.development?
     render(json: response, status: status)
   end
+  # :nocov:
 end

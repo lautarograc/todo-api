@@ -9,8 +9,12 @@ class TodosController < ApplicationController
   end
 
   def show
-    service = Todos::Show.new(params).perform
-    render json: TodosPrint.render(service[:todo])
+    service = Todos::Show.new(params: params, current_user: current_user).perform
+    if service[:todo]
+      render json: TodosPrint.render(service[:todo])
+    else
+      render json: { errors: service[:errors] }, status: :not_found
+    end
   end
 
   def create
@@ -43,10 +47,10 @@ class TodosController < ApplicationController
   private
 
   def create_params
-    params.permit(:name, :description, :status, :priority, :due_date)
+    params.permit(:name, :description, :status, :priority, :due_date, :parent_id)
   end
 
   def update_params
-    params.permit(:id, :name, :description, :status, :priority, :due_date)
+    params.permit(:id, :name, :description, :status, :priority, :due_date, :parent_id)
   end
 end

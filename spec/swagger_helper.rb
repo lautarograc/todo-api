@@ -23,6 +23,23 @@ RSpec.configure do |config|
       },
       paths: {},
       components: {
+        schemas: {
+          todo: {
+            type: :object,
+            properties: {
+              id: { type: :integer },
+              name: { type: :string },
+              created_at: { type: :string },
+              updated_at: { type: :string },
+              description: { type: :string },
+              status: { type: :string },
+              priority: { type: :string },
+              due_date: { type: :string },
+              parent_id: { type: :integer },
+              children: { type: :array, items: { '$ref' => '#/components/schemas/todo' } }
+    }
+  }
+        },
         securitySchemes: {
           Bearer: {
             description: "JWT Authorization header using the Bearer scheme. Example: 'Authorization",
@@ -50,4 +67,5 @@ RSpec.configure do |config|
   # the key, this may want to be changed to avoid putting yaml in json files.
   # Defaults to json. Accepts ':json' and ':yaml'.
   config.openapi_format = :yaml
+  config.include AuthHelper, type: :request
 end
