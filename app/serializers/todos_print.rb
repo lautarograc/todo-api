@@ -1,7 +1,7 @@
 class TodosPrint < Blueprinter::Base
   identifier :id
 
-  fields :name, :description, :token
+  fields :name, :description, :token, :status, :priority, :due_date, :created_at, :updated_at
 
   field :children_count do |todo, _options|
     todo.children.count
@@ -11,7 +11,7 @@ class TodosPrint < Blueprinter::Base
     {
       id: todo.id,
       parent: todo.parent_id,
-      children: todo.children.map(&:id),
+      children: TodosPrint.render_as_hash(todo.children),
       siblings: todo.siblings.map(&:id)
     }
   end

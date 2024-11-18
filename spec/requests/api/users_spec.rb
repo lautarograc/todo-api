@@ -14,7 +14,7 @@ RSpec.describe 'Users API', type: :request do
           password: { type: :string, example: 'password123' },
           password_confirmation: { type: :string, example: 'password123' }
         },
-        required: ['email_address', 'password', 'password_confirmation']
+        required: [ 'email_address', 'password', 'password_confirmation' ]
       }
 
       response '201', 'User created' do

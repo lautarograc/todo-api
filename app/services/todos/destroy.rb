@@ -2,12 +2,13 @@ module Todos
   class Destroy
     attr_reader :errors
 
-    def initialize(params)
-      @id = params[:id]
+    def initialize(params:, current_user:)
+      @params = params
+      @current_user = current_user
     end
 
     def perform
-      todo = Todo.find(@id)
+      todo = Todo.where(user_id: @current_user.id).find(@params[:id])
       if todo.destroy
         OpenStruct.new(success?: true)
       else

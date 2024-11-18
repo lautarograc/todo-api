@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   def index
-    service = Todos::Index.new(params).perform
+    service = Todos::Index.new(params: params, current_user: current_user).perform
     render json: {
       total_count: service[:total_count],
       current_page: service[:current_page],
@@ -14,7 +14,7 @@ class TodosController < ApplicationController
   end
 
   def create
-    service = Todos::Create.new(params: create_params).perform
+    service = Todos::Create.new(params: create_params, current_user: current_user).perform
     if service.success?
       render json: TodosPrint.render(service.todo), status: :created
     else
@@ -23,7 +23,7 @@ class TodosController < ApplicationController
   end
 
   def update
-    service = Todos::Update.new(params).perform
+    service = Todos::Update.new(params: update_params, current_user: current_user).perform
     if service.success?
       render json: TodosPrint.render(service.todo)
     else
@@ -32,7 +32,7 @@ class TodosController < ApplicationController
   end
 
   def destroy
-    service = Todos::Destroy.new(params).perform
+    service = Todos::Destroy.new(params: params, current_user: current_user).perform
     if service.success?
       head :no_content
     else
@@ -43,6 +43,10 @@ class TodosController < ApplicationController
   private
 
   def create_params
-    params.permit(:name, :parent_id, :description)
+    params.permit(:name, :description, :status, :priority, :due_date)
+  end
+
+  def update_params
+    params.permit(:id, :name, :description, :status, :priority, :due_date)
   end
 end

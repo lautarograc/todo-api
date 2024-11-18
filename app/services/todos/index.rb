@@ -1,11 +1,12 @@
 module Todos
   class Index
-    def initialize(params)
+    def initialize(params:, current_user:)
       @params = params
+      @current_user = current_user
     end
 
     def perform
-      q = Todo.ransack(@params[:q])
+      q = Todo.where(user_id: @current_user.id, parent_id: nil).includes(:parent, :children).ransack(@params[:q])
       todos = q.result.order(created_at: :desc)
 
       page = @params[:page].to_i > 0 ? @params[:page].to_i : 1

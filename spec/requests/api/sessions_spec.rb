@@ -13,7 +13,7 @@ RSpec.describe 'Sessions API', type: :request do
           email_address: { type: :string, example: 'user@example.com' },
           password: { type: :string, example: 'password123' }
         },
-        required: ['email_address', 'password']
+        required: [ 'email_address', 'password' ]
       }
 
       response '200', 'Session created' do

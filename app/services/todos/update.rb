@@ -2,14 +2,14 @@ module Todos
   class Update
     attr_reader :todo, :errors
 
-    def initialize(params)
-      @id = params[:id]
-      @params = params.require(:todo).permit(:name, :token, :description, :parent_id)
+    def initialize(params:, current_user:)
+      @params = params
+      @current_user = current_user
     end
 
     def perform
-      @todo = Todo.find(@id)
-      if @todo.update(@params)
+      @todo = Todo.find_by(id: @params[:id])
+      if @todo.update(@params) && @todo.user_id == @current_user.id
         OpenStruct.new(success?: true, todo: @todo)
       else
         OpenStruct.new(success?: false, errors: @todo.errors.full_messages)
