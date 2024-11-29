@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 4e78ce6ddbe2978f773ea3c1882f2c471444dbe8
+  revision: 1d3689e80961bd83a0b0054a8b7c1285c214bb77
   branch: main
   specs:
     actioncable (8.1.0.alpha)
@@ -179,7 +179,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     mini_mime (1.1.5)
-    minitest (5.25.1)
+    minitest (5.25.2)
     msgpack (1.7.5)
     net-imap (0.5.1)
       date
@@ -243,10 +243,10 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.2)
-    reline (0.5.11)
+    reline (0.5.12)
       io-console (~> 0.5)
     rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
